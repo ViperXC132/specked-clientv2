@@ -22,7 +22,10 @@ public class CrosshairEditorScreen extends Screen {
         for (int x = 0; x < 9; x++) for (int y = 0; y < 3; y++) {
             int px = GRID_START_X + x * (CELL_SIZE + 4), py = GRID_START_Y + y * (CELL_SIZE + 4);
             context.fill(px, py, px + CELL_SIZE, py + CELL_SIZE, grid[x][y] ? 0xFF6D7CFF : 0xFF1E2540);
-            context.drawBorder(px, py, CELL_SIZE, CELL_SIZE, 0xFF3F4D6D);
+            context.fill(px, py, px + CELL_SIZE, py + 1, 0xFF3F4D6D);
+            context.fill(px, py + CELL_SIZE - 1, px + CELL_SIZE, py + CELL_SIZE, 0xFF3F4D6D);
+            context.fill(px, py, px + 1, py + CELL_SIZE, 0xFF3F4D6D);
+            context.fill(px + CELL_SIZE - 1, py, px + CELL_SIZE, py + CELL_SIZE, 0xFF3F4D6D);
         }
         context.drawTextWithShadow(this.textRenderer, "Click cells to paint | Right-click to erase | Close to save", 20, this.height - 30, 0xFF8892A8);
     }
