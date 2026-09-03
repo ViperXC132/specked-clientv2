@@ -10,7 +10,7 @@ public class ReachDisplayFeature extends Feature {
     @Override public void onTick() {}
     @Override public void onRender(DrawContext context, float tickDelta) {
         if (!enabled || mc == null || mc.player == null || mc.crosshairTarget == null) return;
-        double reach = mc.player.getPos().distanceTo(mc.crosshairTarget.getPos());
+        double reach = mc.player.getEyePos().distanceTo(mc.crosshairTarget.getPos());
         context.drawText(mc.textRenderer, String.format("Reach: %.2f", reach), 10, 85, 0xFFFFFF, true);
     }
 }
