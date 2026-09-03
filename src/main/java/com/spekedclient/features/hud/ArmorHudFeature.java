@@ -12,10 +12,10 @@ public class ArmorHudFeature extends Feature {
         if (!enabled || mc == null || mc.player == null) return;
         int y = 10;
         for (int i = 3; i >= 0; i--) {
-            var armor = mc.player.getInventory().getArmorStack(i);
+            var armor = mc.player.getInventory().getArmor(i);
             if (!armor.isEmpty()) {
                 String text = armor.getName().getString() + " " + armor.getDamage() + "/" + armor.getMaxDamage();
-                context.drawText(mc.textRenderer, text, this.mc.getWindow().getWidth() - 150, y, 0xFFFFFF, true);
+                context.drawText(mc.textRenderer, text, mc.getWindow().getWidth() - 150, y, 0xFFFFFF, true);
                 y += 12;
             }
         }
