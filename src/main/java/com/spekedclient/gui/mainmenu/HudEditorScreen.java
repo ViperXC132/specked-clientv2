@@ -12,7 +12,6 @@ public class HudEditorScreen extends Screen {
     private int coords_x = 10, coords_y = 500;
     private int armor_x = 600, armor_y = 500;
     private int dragging = -1;
-    private double lastMouseX, lastMouseY;
 
     public HudEditorScreen(Screen parent) { super(Text.literal("HUD Editor")); this.parent = parent; }
 
@@ -31,7 +30,10 @@ public class HudEditorScreen extends Screen {
     private void drawElement(DrawContext context, int x, int y, String text, int mouseX, int mouseY) {
         boolean hover = mouseX >= x && mouseX < x + 100 && mouseY >= y && mouseY < y + 30;
         context.fill(x, y, x + 100, y + 30, hover ? 0x603B5BDB : 0x30101828);
-        context.drawBorder(x, y, 100, 30, hover ? 0xFF6D7CFF : 0xFF1E2540);
+        context.fill(x, y, x + 100, y + 1, hover ? 0xFF6D7CFF : 0xFF1E2540);
+        context.fill(x, y + 29, x + 100, y + 30, hover ? 0xFF6D7CFF : 0xFF1E2540);
+        context.fill(x, y, x + 1, y + 30, hover ? 0xFF6D7CFF : 0xFF1E2540);
+        context.fill(x + 99, y, x + 100, y + 30, hover ? 0xFF6D7CFF : 0xFF1E2540);
         context.drawTextWithShadow(this.textRenderer, text, x + 8, y + 11, 0xFF8892A8);
     }
 
@@ -44,7 +46,6 @@ public class HudEditorScreen extends Screen {
             else if (isInBounds(ping_x, ping_y, mouseX, mouseY)) dragging = 1;
             else if (isInBounds(coords_x, coords_y, mouseX, mouseY)) dragging = 2;
             else if (isInBounds(armor_x, armor_y, mouseX, mouseY)) dragging = 3;
-            lastMouseX = mouseX; lastMouseY = mouseY;
             return true;
         } else if (button == 1) {
             this.client.setScreen(this.parent);
@@ -61,17 +62,12 @@ public class HudEditorScreen extends Screen {
             else if (dragging == 1) { ping_x += dx; ping_y += dy; }
             else if (dragging == 2) { coords_x += dx; coords_y += dy; }
             else { armor_x += dx; armor_y += dy; }
-            lastMouseX = click.x(); lastMouseY = click.y();
             return true;
         }
         return super.mouseDragged(click, offsetX, offsetY);
     }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
-    }
-
+    @Override public boolean mouseReleased(Click click) { dragging = -1; return super.mouseReleased(click); }
     private boolean isInBounds(int x, int y, double mouseX, double mouseY) { return mouseX >= x && mouseX < x + 100 && mouseY >= y && mouseY < y + 30; }
     @Override public void close() { this.client.setScreen(this.parent); }
     @Override public boolean shouldPause() { return false; }
